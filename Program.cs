@@ -2,9 +2,9 @@ using System.Text.Json.Serialization;
 using CardRequestApi.Data;
 using CardRequestApi.Exceptions;
 using CardRequestApi.Middleware;
-using CardRequestApi.Models;
 using CardRequestApi.Services;
 using Microsoft.EntityFrameworkCore;
+using CardRequestApi.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +23,10 @@ builder
     });
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer<ApiKeySecuritySchemeTransformer>();
+});
 
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
